@@ -3,16 +3,21 @@
 This is a small introduction to how you can use the tool [flask-api-SQLAlchemy](https://github.com/nabeelaccount/flask-api-SQLAlchemy) to create a Fask API capable of connecting to a database server.
 
 1. Create the minikube cluster
+
 `minikube start`
 
 2. Create a kubernetes secret for the "DATABASE_URL".
+
 Here is an example:
+
 `kubectl create secret generic flask-app-secrets --from-literal=DATABASE_URL='postgresql://database-username:database-password@database-endpoint/initial-database-name'`
 
 3. Create the Flask API deployment
+
 `kubectl apply flask-api-deployment.yaml`
 
 4. Connect to the application service hosted on minikube by running:
+
 `minikube service flask-app-service`
 
 Expected result:
