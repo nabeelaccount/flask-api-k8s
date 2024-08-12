@@ -3,17 +3,17 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: flask-api
-  name: flask-api
+    app: flask-app
+  name: flask-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: flask-api
+      app: flask-app
   template:
     metadata:
       labels:
-        app: flask-api
+        app: flask-app
     spec:
       containers:
       - image: nabeelaccount/fask-api-sqlalchemy
@@ -21,10 +21,6 @@ spec:
         ports:
         - containerPort: 5000
         env:
-        # - name: FLASK_APP
-        #   value: "app"
-        # - name: FLASK_DEBUG
-        #   value: "False"
         - name: DATABASE_URL
           valueFrom:
             secretKeyRef:
@@ -36,10 +32,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: flask-app-service
+  name: flask-app
 spec:
   selector:
-    app: flask-api
+    app: flask-app
   ports:
     - protocol: TCP
       port: 5000

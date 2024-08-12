@@ -6,19 +6,30 @@ This is a small introduction to how you can use the tool [flask-api-SQLAlchemy](
 
 `minikube start`
 
-2. Create a kubernetes secret for the "DATABASE_URL".
+2. Create the Postgres Server secrets
+
+```
+kubectl create secret generic postgres-server-secrets --from-literal=POSTGRES_PASSWORD='postgres' --from-literal=POSTGRES_USER='postgres' --from-literal=POSTGRES_DB='postgres' --dry-run=client -o yaml > postgres-server-secrets.yaml
+```
+
+3. Create a kubernetes secret for the "DATABASE_URL".
 
 Here is an example:
 
-`kubectl create secret generic flask-app-secrets --from-literal=DATABASE_URL='postgresql://database-username:database-password@database-endpoint/initial-database-name'`
+```
+kubectl create secret generic flask-app-secrets --from-literal=DATABASE_URL='postgresql://postgres:postgres@postgres-server/postgres' --dry-run=client -o yaml
+```
 
-3. Create the Flask API deployment
+where
+DATABASE_URL='postgresql://postgres-server-username:postgres-server-password@postgres-server-endpoint/initial/existing-datase'
 
-`kubectl apply flask-api-deployment.yaml`
+3. Run both the flask API app and the Postgres Server
+
+`kubectl apply -f .`
 
 4. Connect to the application service hosted on minikube by running:
 
-`minikube service flask-app-service`
+`minikube service flask-app`
 
 Expected result:
 "http://127.0.0.1:random-minikube-port"
